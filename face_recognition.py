@@ -26,7 +26,7 @@ model_l.prepare(ctx_id=0, det_size=(640, 640), det_thresh=0.5)  # input size
 def identification(df, test_vector, name_role=['Name', 'Role'], threshold=0.5):
     data = df.copy()
 
-    X_list = df['Facial_Features'].tolist()
+    X_list = df['facial_features'].tolist()
     X = np.asarray(X_list)
 
     y = test_vector.reshape(1, -1)
@@ -57,8 +57,8 @@ def face_prediction(image, df, name_role=['Name', 'Role'], threshold=0.5):
         embeddings = res['embedding']
         person_name, person_role = identification(df=df,
                                                   test_vector=embeddings,
-                                                  name_role,
-                                                  threshold)
+                                                  name_role=name_role,
+                                                  threshold=threshold)
 
         if person_name == 'Unknown':
             color = (0, 0, 255)  # bgr
