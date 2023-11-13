@@ -55,8 +55,8 @@ def face_prediction(image, df, name_role=['Name', 'Role'], threshold=0.5):
     for res in results:
         x1, y1, x2, y2 = res['bbox'].astype(int)
         embeddings = res['embedding']
-        person_name, person_role = identification(image,
-                                                  df,
+        person_name, person_role = identification(df=df,
+                                                  test_vector=embeddings,
                                                   name_role,
                                                   threshold)
 
