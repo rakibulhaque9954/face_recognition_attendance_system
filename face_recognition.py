@@ -48,15 +48,15 @@ def identification(df, test_vector, name_role=['Name', 'Role'], threshold=0.5):
 
     return name, role
 
-def face_prediction(image, df, test_vector, name_role=['Name', 'Role'], threshold=0.5):
+def face_prediction(image, df, name_role=['Name', 'Role'], threshold=0.5):
     results = model_l.get(image)
     img_copy = image.copy() # good practice
 
     for res in results:
         x1, y1, x2, y2 = res['bbox'].astype(int)
         embeddings = res['embedding']
-        person_name, person_role = identification(df,
-                                                  test_vector,
+        person_name, person_role = identification(image,
+                                                  df,
                                                   name_role,
                                                   threshold)
 
