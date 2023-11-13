@@ -18,7 +18,7 @@ r = redis.StrictRedis(host=host, port=port_no, password=password)
 # buffalo_l model face analysis configuration
 model_l = FaceAnalysis(name='buffalo_l',
                        root='/Users/boss/Desktop/Notes/4_attendance_app/insightface_model/models/buffalo_l',
-                       providers=['CPUExecutionProvider '])  # CUDAExecutionProvider
+                       providers=['CPUExecutionProvider '])  # CUDAExecutionProvider incase GPU
 
 model_l.prepare(ctx_id=0, det_size=(640, 640), det_thresh=0.5)  # input size
 
@@ -48,3 +48,27 @@ def identification(df, test_vector, name_role=['Name', 'Role'], threshold=0.5):
 
     return name, role
 
+def face_prediction(image, df, test_vector, name_role=['Name', 'Role'], threshold=0.5):
+    results = model_l.get(image)
+    img_copy = image.copy() # good practice
+
+    for res in results:
+        x1, y1, x2, y2 = res['bbox'].astype(int)
+        embeddings = res['embedding']
+        person_name, person_role = identification(df,
+                                                  test_vector,
+                                                  name_role,
+                                                  threshold)
+
+        if person_name == 'Unknown':
+            color = (0, 0, 255)  # bgr
+
+        else:
+            color = (0, 255, 0)
+
+        cv2.rectangle(img_copy, (x1, y1), (x2, y2), color)
+
+        rect_text = person_name
+        cv2.putText(img_copy, rect_text, (x1, y1), cv2.FONT_HERSHEY_DUPLEX, 0.7, color, 2)
+
+    return img_copy
