@@ -7,3 +7,4 @@ streamlit-webrtc
 opencv-python
 onnxruntime==1.8.1
 insightface==0.1.5
+redis
