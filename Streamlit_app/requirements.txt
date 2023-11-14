@@ -4,7 +4,6 @@ numpy==1.19.5
 pandas==1.2.4
 streamlit
 streamlit-webrtc
-opencv-python-headless==4.5.2.54
+opencv-python
 onnxruntime==1.8.1
 insightface==0.1.5
-gstreamer
