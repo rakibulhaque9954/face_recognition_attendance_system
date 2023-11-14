@@ -46,7 +46,7 @@ def redis_connect(keyname):
 # buffalo_l model face analysis configuration
 model_l = FaceAnalysis(name='buffalo_l',
                        root='/Users/boss/Desktop/Notes/4_attendance_app/insightface_model/models/buffalo_l',
-                       providers=['CPUExecutionProvider '])  # CUDAExecutionProvider incase GPU
+                       providers=['CPUExecutionProvider'])  # CUDAExecutionProvider incase GPU
 
 model_l.prepare(ctx_id=0, det_size=(640, 640), det_thresh=0.5)  # input size
 
