@@ -2,7 +2,7 @@
 # You can install these packages using pip. Simply run 'pip install -r requirements.txt' in your terminal.
 numpy==1.19.5
 pandas==1.2.4
-streamlit==0.82.0
+streamlit
 streamlit-webrtc
 opencv-python-headless==4.5.2.54
 onnxruntime==1.8.1
