@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import cv2
-
+import datetime
 import redis
 
 # insightface
@@ -44,9 +44,9 @@ def redis_connect(keyname):
 
 
 # buffalo_l model face analysis configuration
-model_l = FaceAnalysis(name='buffalo_sc',
-                       root='Streamlit_app/buffalo_sc',
-                       providers=['CPUExecutionProvider'])  # CUDAExecutionProvider incase GPU
+model_l = FaceAnalysis(name='buffalo_l',
+                        root='/Users/boss/Desktop/Notes/4_attendance_app/insightface_model/models/buffalo_l', 
+                        providers=['CPUExecutionProvider']) # CUDAExecutionProvider incase GPU
 
 model_l.prepare(ctx_id=0, det_size=(640, 640), det_thresh=0.5)  # input size
 
@@ -77,6 +77,7 @@ def identification(df, test_vector, name_role=['Name', 'Role'], threshold=0.5):
     return name, role
 
 def face_prediction(image, df, name_role=['Name', 'Role'], threshold=0.5):
+    current_time = datetime.datetime.now().strftime("%H:%M:%S")  # get current time
     results = model_l.get(image)
     img_copy = image.copy() # good practice
 
@@ -98,7 +99,7 @@ def face_prediction(image, df, name_role=['Name', 'Role'], threshold=0.5):
 
         rect_text = person_name
         cv2.putText(img_copy, rect_text, (x1, y1), cv2.FONT_HERSHEY_DUPLEX, 0.7, color, 2)
-
+        cv2.putText(img_copy, str(current_time), (x2+10, y1), cv2.FONT_HERSHEY_DUPLEX, 0.7, (255, 0, 0), 2)
     return img_copy
 
 
