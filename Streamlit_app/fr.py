@@ -8,12 +8,39 @@ import redis
 from insightface.app import FaceAnalysis
 from sklearn.metrics import pairwise  # for cosine similarity calculation
 
-# connect to redis cloud
-host = 'redis-12830.c302.asia-northeast1-1.gce.cloud.redislabs.com'
-port_no = 12830
-password = '0k137l1gcAW3TQMjUeQ06oc7vQTMKsAq'
+# # connect to redis cloud
+# host = 'redis-12830.c302.asia-northeast1-1.gce.cloud.redislabs.com'
+# port_no = 12830
+# password = '0k137l1gcAW3TQMjUeQ06oc7vQTMKsAq'
 
-r = redis.StrictRedis(host=host, port=port_no, password=password)
+# r = redis.StrictRedis(host=host, port=port_no, password=password)
+
+def redis_connect(keyname):
+    # Retrieve data from redis
+    host = 'redis-12830.c302.asia-northeast1-1.gce.cloud.redislabs.com'
+    port_no = 12830
+    password = '0k137l1gcAW3TQMjUeQ06oc7vQTMKsAq'
+    r = redis.StrictRedis(host=host, port=port_no, password=password)
+    # print(r.ping())
+
+
+    key_name = keyname
+    redis_hash = r.hgetall(key_name)
+    # print(redis_hash)
+    redis_series = pd.Series(redis_hash)
+
+    # Convert bytes to array
+    redis_series = redis_series.apply(lambda x: np.frombuffer(x, dtype=np.float32))
+    index = redis_series.index
+    index = list(map(lambda x: x.decode(), index)) # converting keys to strings
+
+    redis_series.index = index
+
+    redis_df = redis_series.to_frame().reset_index() # converting to df and resetting index
+    redis_df.columns = ['name_role', 'facial_features']
+    redis_df[['Name' , 'Role']] = redis_df['name_role'].apply(lambda x: x.split('@')).apply(pd.Series) # splitting name and role to different columns
+    
+    return redis_df
 
 
 # buffalo_l model face analysis configuration
