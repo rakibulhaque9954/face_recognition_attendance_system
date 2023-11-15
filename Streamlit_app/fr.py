@@ -76,6 +76,13 @@ def identification(df, test_vector, name_role=['Name', 'Role'], threshold=0.5):
 
     return name, role
 
+### Real-time face recognition
+# save logs every minute
+
+class RealTimeFaceRecognition:
+    def __init__(self):
+        pass
+
 def face_prediction(image, df, name_role=['Name', 'Role'], threshold=0.5):
     current_time = datetime.datetime.now().strftime("%H:%M:%S")  # get current time
     results = model_l.get(image)
