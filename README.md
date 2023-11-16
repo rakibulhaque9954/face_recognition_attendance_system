@@ -47,8 +47,10 @@ To install the project, follow these steps:
 
 Clone the repository to your local machine.
 Navigate to the project directory.
-Install the required Python packages using pip:
-`pip install -r requirements.txt`
+Install the required Python packages using pip:<br>
+``
+pip install -r requirements.txt
+``
 
 # Behind the Scenes
 In the parent directory you will find different notebooks and the backbone of this project.
